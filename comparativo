@@ -1,0 +1,119 @@
+Projeto: Comparação entre Azure Functions, Azure Logic Apps e Azure WebJobs
+Estrutura do Projeto
+Introdução
+Demonstração de Azure Functions
+Demonstração de Azure Logic Apps
+Demonstração de Azure WebJobs
+Opções de Hospedagem do Azure Functions
+Escalabilidade do Azure Functions
+Conclusão
+1. Introdução
+Neste projeto, exploraremos as diferenças funcionais entre Azure Functions, Azure Logic Apps e Azure WebJobs. Vamos implementar exemplos práticos para cada tecnologia e discutir opções de hospedagem e escalabilidade.
+
+2. Demonstração de Azure Functions
+Objetivo: Criar uma função que receba uma solicitação HTTP e retorne uma mensagem de boas-vindas.
+
+Passos para Criar uma Azure Function
+Criar uma Function App no Azure Portal:
+
+Acesse o Azure Portal.
+Clique em "Create a resource" > "Compute" > "Function App".
+Preencha os detalhes:
+Subscription: sua assinatura do Azure.
+Resource Group: crie um novo ou escolha um existente.
+Function App name: meuappfunction.
+Publish: Code.
+Runtime stack: Node.js (ou outra linguagem de sua escolha).
+Region: escolha uma região.
+Criar uma Função:
+
+Na Function App criada, clique em "Functions" > "Add" > "HTTP trigger".
+Dê um nome à função, por exemplo, boasVindas.
+Escolha "Anonymous" para o nível de autorização.
+Código da Função:
+
+Substitua o código padrão pelo seguinte código:
+module.exports = async function (context, req) {
+    context.res = {
+        status: 200,
+        body: "Bem-vindo ao meu Azure Function!"
+    };
+};
+Testar a Função:
+
+Clique em "Test" e execute a função. Você deve ver a mensagem de boas-vindas.
+3. Demonstração de Azure Logic Apps
+Objetivo: Criar um fluxo que envia um e-mail sempre que um novo item é adicionado a um blob do Azure.
+
+Passos para Criar uma Azure Logic App
+Criar uma Logic App no Azure Portal:
+
+Clique em "Create a resource" > "Integration" > "Logic App".
+Preencha os detalhes, como nome (meuapplogic) e região.
+Designer da Logic App:
+
+Após criar a Logic App, clique em "Logic App Designer".
+Escolha o gatilho "When a blob is added or modified" (conector do Azure Blob Storage).
+Conecte-se à sua conta de armazenamento do Azure.
+Adicionar Ação:
+
+Após o gatilho, adicione uma ação: "Send an email" (conector do Outlook ou Gmail).
+Preencha os detalhes do e-mail, incluindo o endereço do destinatário e o conteúdo, que pode incluir informações sobre o blob.
+Salvar e Testar:
+
+Salve o fluxo e faça o upload de um arquivo no blob do Azure. Verifique se o e-mail foi enviado.
+4. Demonstração de Azure WebJobs
+Objetivo: Criar um WebJob que processa filas de mensagens.
+
+Passos para Criar um WebJob
+Criar um App Service no Azure Portal:
+
+Clique em "Create a resource" > "Web + Mobile" > "Web App".
+Preencha os detalhes, como nome (meuappwebjob) e região.
+Adicionar um WebJob:
+
+No App Service criado, clique em "WebJobs".
+Clique em "Add" e escolha "Continuous" ou "Triggered".
+Faça upload de um arquivo .zip que contém seu código (exemplo: um console app que lê mensagens de uma fila).
+Código do WebJob:
+
+O arquivo pode conter um código simples em C# que lê mensagens de uma fila do Azure Storage:
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+
+public class Functions
+{
+    public static void ProcessQueueMessage([QueueTrigger("minha-fila")] string message, ILogger log)
+    {
+        log.LogInformation($"Mensagem recebida: {message}");
+    }
+}
+Testar o WebJob:
+
+Coloque uma mensagem na fila do Azure e verifique os logs do WebJob para ver se a mensagem foi processada.
+5. Opções de Hospedagem do Azure Functions
+O Azure Functions oferece diferentes planos de hospedagem:
+
+Plano Gratuito: Ideal para desenvolvimento e testes.
+Plano de Consumo: Paga apenas pelo uso e escala automaticamente.
+Plano Dedicado: Para controle total sobre a infraestrutura.
+Plano Premium: Recursos dedicados e suporte a redes virtuais.
+Comparação de Custos e Recursos
+Tipo de Plano	Preço	Escalabilidade	Recursos
+Gratuito	Gratuito (limitações)	Limitada	1 milhão de execuções mensais, 400.000 GB-s
+Consumo	Paga conforme o uso	Escalabilidade automática	Recursos conforme necessário, sem limites fixos
+Dedicado	Preço do App Service	Escalabilidade manual	Recursos dedicados, controle completo
+Premium	Preço do App Service Premium	Escalabilidade automática	Recursos dedicados, suporte a VNETs
+6. Escalabilidade do Azure Functions
+Mecanismos de Escalabilidade:
+
+Escalabilidade automática com base na carga.
+Escalabilidade horizontal com a criação de novas instâncias.
+Casos de Uso:
+
+Aplicações que requerem resposta a eventos de forma dinâmica, como um aplicativo de processamento de imagens que precisa escalar durante picos de uso.
+7. Conclusão
+Neste projeto, exploramos Azure Functions, Azure Logic Apps e Azure WebJobs. Cada tecnologia tem casos de uso específicos e vantagens. Azure Functions é ideal para computação sem servidor, Logic Apps para integração sem código e WebJobs para tarefas em segundo plano dentro de um App Service. As opções de hospedagem e a escalabilidade do Azure Functions permitem que você atenda a diferentes necessidades de negócios de forma eficiente.
+
+Considerações Finais
+Esse projeto pode ser expandido com casos de teste completos, documentação detalhada e uma análise de desempenho. Você também pode integrar monitoramento e logging usando o Azure Application Insights para acompanhar o desempenho e a integridade das suas funções e serviços.
